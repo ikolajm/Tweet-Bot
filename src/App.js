@@ -1,28 +1,46 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header';
+import Search from './components/Search';
+import Feed from './components/Feed';
+import './App.css'
 
-class App extends Component {
+export default class App extends Component {
+  state = {
+    url: 'https://stream.twitter.com/1.1/statuses/filter.json?track=',
+    keywords: '',
+    results: []
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      keywords: e.target.value
+    })
+  }
+
+  handleSubmit = (keywords) => {
+    let search = keywords.trim().split(' ').join('');
+    fetch(`${this.state.url}${search}`)
+    .then(data => data.json())
+    .then(json => {
+      this.setState({
+        results: json
+      })
+      console.log(json)
+    })
+    .catch(err => err.message);
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div >
+        <Header />
+        <Search 
+          handleChange={this.handleChange} 
+          handleSubmit={this.handleSubmit}
+          value={this.state.keywords}
+        />
+        <Feed />
       </div>
     );
   }
 }
-
-export default App;

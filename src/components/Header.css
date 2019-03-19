@@ -1,0 +1,14 @@
+header {
+    background-color: #c62a2a;
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    height: 50px;
+    padding: .25rem;
+}
+
+header h1 {
+    margin: 0;
+}
